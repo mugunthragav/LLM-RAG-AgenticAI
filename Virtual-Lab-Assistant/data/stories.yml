@@ -1,0 +1,143 @@
+version: "3.1"
+
+stories:
+- story: greet and respond
+  steps:
+    - intent: greet
+    - action: utter_greet
+
+- story: say goodbye
+  steps:
+    - intent: goodbye
+    - action: utter_goodbye
+
+- story: explain fuel cell types
+  steps:
+    - intent: fuel_cell_types
+    - action: utter_fuel_cell_types
+
+- story: explain hydrogen fuel cell basics
+  steps:
+    - intent: hydrogen_fuel_cell_basics
+    - action: utter_hydrogen_fuel_cell_basics
+
+- story: explain fuel cell efficiency
+  steps:
+    - intent: fuel_cell_efficiency
+    - action: utter_fuel_cell_efficiency
+
+- story: explain fuel cell main components
+  steps:
+    - intent: fuel_cell_main_components
+    - action: utter_fuel_cell_main_components
+
+- story: explain fuel cell structure
+  steps:
+    - intent: fuel_cell_structure
+    - action: utter_fuel_cell_structure
+
+- story: explain fuel cell parts list
+  steps:
+    - intent: fuel_cell_parts_list
+    - action: utter_fuel_cell_parts_list
+
+- story: explain the anode cathode function
+  steps:
+    - intent: anode_cathode_function
+    - action: utter_anode_cathode_function   
+
+- story: explain the fuel cell troubleshooting
+  steps:
+    - intent: fuel_cell_troubleshooting
+    - action: utter_fuel_cell_troubleshooting
+
+- story: list labs available
+  steps:
+    - intent: list_of_labs
+    - action: utter_list_of_labs
+
+- story: voltage issue detected
+  steps:
+    - intent: voltage_issues
+    - action: utter_voltage_issues
+
+- story: explain equipment setup guidance
+  steps:
+    - intent: equipment_setup
+    - action: utter_equipment_setup
+
+- story: list the membrane troubleshooting
+  steps:
+    - intent: membrane_issues
+    - action: utter_membrane_issues
+
+- story: gas flow problems
+  steps:
+    - intent: gas_flow_issues
+    - action: utter_gas_flow_issues
+
+- story: maintenance flow
+  steps:
+    - intent: maintenance_procedures
+    - action: utter_maintenance_procedures
+
+- story: optimization guidance
+  steps:
+    - intent: parameter_optimization
+    - action: utter_parameter_optimization
+
+- story: check performance testing
+  steps:
+    - intent: performance_testing
+    - action: utter_performance_testing
+
+- story: List all lab categories
+  steps:
+    - intent: lab_categories_list
+    - action: utter_lab_categories_list
+
+- story: List application-based labs
+  steps:
+    - intent: application_lab_types
+    - action: utter_application_lab_types
+
+- story: List equipment-based labs
+  steps:
+    - intent: equipment_lab_types
+    - action: utter_equipment_lab_types
+
+- story: List product-based labs
+  steps:
+    - intent: product_lab_types
+    - action: utter_product_lab_types
+
+- story: explain polarization_curve
+  steps:
+    - intent: polarization_curve
+    - action: utter_polarization_curve
+
+- story: Explain catalyst layer
+  steps:
+    - intent: catalyst_layer_info
+    - action: utter_catalyst_layer_info
+
+- story: Explain MEA
+  steps:
+    - intent: mea_info
+    - action: utter_mea_info
+
+- story: Explain bipolar plate
+  steps:
+    - intent: bipolar_plate_info
+    - action: utter_bipolar_plate_info
+
+- story: Explain gas diffusion layer
+  steps:
+    - intent: gdl_info
+    - action: utter_gdl_info
+
+- story: Describe fuel cell parts
+  steps:
+    - intent: part_descriptions
+    - action: utter_part_descriptions
+

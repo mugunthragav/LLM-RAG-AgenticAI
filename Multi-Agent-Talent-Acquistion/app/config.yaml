@@ -1,0 +1,5 @@
+paths:
+  upload_dir: "resume_uploads"
+email:
+  from: "${EMAIL_FROM}"
+  to: "${EMAIL_TO}"

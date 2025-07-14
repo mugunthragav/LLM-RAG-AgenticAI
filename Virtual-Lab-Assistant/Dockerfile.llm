@@ -1,0 +1,8 @@
+# Dockerfile.llm
+FROM virtual-lab-base:latest AS llm
+
+WORKDIR /app
+COPY . .
+
+EXPOSE 8001
+CMD ["uvicorn", "rag.llm_config:app", "--host", "0.0.0.0", "--port", "8001"]

@@ -1,0 +1,85 @@
+version: '3.8'
+services:
+  rasa:
+    build:
+      context: .
+      dockerfile: Dockerfile.rasa
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./models:/app/models
+    depends_on:
+      - actions
+      - mysql
+    environment:
+      - TZ=Asia/Kolkata
+
+  actions:
+    build:
+      context: .
+      dockerfile: Dockerfile.actions
+    ports:
+      - "5055:5055"
+    volumes:
+      - .:/app
+
+  auth:
+    build:
+      context: .
+      dockerfile: Dockerfile.auth
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+      - SECRET_KEY=${SECRET_KEY}
+      - RASA_URL=${RASA_URL}
+
+  llm:
+    build:
+      context: .
+      dockerfile: Dockerfile.llm
+    ports:
+      - "8001:8001"
+    volumes:
+      - .:/app
+    depends_on:
+      - auth
+
+  rag:
+    build:
+      context: .
+      dockerfile: Dockerfile.rag
+    ports:
+      - "8002:8002"
+    volumes:
+      - .:/app
+    depends_on:
+      - llm
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:

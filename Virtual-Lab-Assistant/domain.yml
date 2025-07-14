@@ -1,0 +1,356 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - fuel_cell_types
+  - check_parameter_limits
+  - get_safety_guidelines
+  - list_of_labs
+  - get_emergency_procedure
+  - check_performance_metrics
+  - hydrogen_fuel_cell_basics
+  - fuel_cell_efficiency
+  - fuel_cell_main_components
+  - fuel_cell_structure
+  - fuel_cell_parts_list
+  - anode_cathode_function
+  - fuel_cell_troubleshooting
+  - application_lab_types
+  - equipment_lab_types
+  - product_lab_types
+  - lab_categories_list
+  - voltage_issues
+  - membrane_issues
+  - gas_flow_issues
+  - performance_testing
+  - polarization_curve
+  - maintenance_procedures
+  - parameter_optimization
+  - catalyst_layer_info
+  - mea_info
+  - bipolar_plate_info
+  - gdl_info
+  - part_descriptions
+  - equipment_setup
+  - available_labs
+  - lab_equipment
+  - experiment_help
+  - query_rag
+  - nlu_fallback
+
+entities:
+  - equipment
+  - experiment
+  - measurement
+  - issue_type
+  - component
+  - parameter
+  - value
+  - unit
+  - fuel_cell_type
+  - safety_guideline
+  - emergency_type
+  - experiment_stage
+  - scenario
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I assist you today?"
+  utter_goodbye:
+    - text: "Goodbye! If you have more questions later, I’ll be here to help."
+  utter_fuel_cell_types:
+    - text: "The main types of fuel cells include PEMFC, SOFC, AFC, PAFC, and MCFC."
+  utter_hydrogen_fuel_cell_basics:
+    - text: "A hydrogen fuel cell produces electricity by reacting hydrogen and oxygen, emitting only water as a byproduct."
+  utter_fuel_cell_efficiency:
+    - text: |
+        Fuel cell efficiency refers to how effectively chemical energy (like hydrogen) is converted into electrical energy.
+
+         Electrical Efficiency: Typically 40–60%  
+         Combined Heat and Power (CHP): Up to 85%  
+         Higher than internal combustion engines (25–30%)
+
+        Example: If 100 units of hydrogen energy produce 50 units of electricity, the efficiency is 50%.
+
+  utter_fuel_cell_main_components:
+    - text: "The main components of a fuel cell are the anode, cathode, and electrolyte."
+  utter_fuel_cell_structure:
+    - text: "A typical fuel cell is structured with layers including electrodes, electrolyte, and bipolar plates stacked together."
+  utter_fuel_cell_parts_list:
+    - text: "Fuel cells consist of anode, cathode, electrolyte membrane, gas diffusion layers, and current collectors."
+  utter_anode_cathode_function:
+    - text: "The anode attracts hydrogen molecules, splitting them into protons and electrons. The cathode facilitates the reaction of protons, electrons, and oxygen to form water."
+  utter_fuel_cell_troubleshooting:
+    - text: |
+        Common fuel cell troubleshooting checks include:
+
+         **Membrane Hydration** – Ensure it’s neither too dry nor flooded  
+         **Gas Supply** – Confirm hydrogen and oxygen are flowing at correct pressures  
+         **Voltage Fluctuations** – May indicate membrane or load issues  
+         **Connections** – Check wiring, sensors, and external load terminals  
+         **Contamination** – Inspect for water or impurities in fuel lines
+
+        If you're facing a specific issue, let me know the error or symptom.
+
+  utter_list_of_labs:
+    - text: |
+        **Lab Categories:**
+        - TEST_STATION  
+        - ENVIRON_CHAMBER  
+        - ANALYZER  
+        - PROCESSING  
+        - MICROSCOPY  
+        - ASSEMBLY
+
+        **Research Focus Labs:**
+        - PEMFC Research  
+        - SOFC Development  
+        - Electrocatalysis  
+        - Membrane Development  
+        - System Integration  
+        - Research Lab
+
+        **Equipment Available:**
+        - MEA Components  
+        - Catalyst Materials  
+        - Test Equipment  
+        - Analysis Systems  
+        - Control Systems
+
+  utter_lab_categories_list:
+  - text: |
+      Labs are categorized into:
+       **Application-based Labs**  
+       **Equipment-based Labs**  
+       **Product-based Labs**
+
+  utter_application_lab_types:
+  - text: |
+      **Application-based Labs include:**
+      - PEMFC Research  
+      - SOFC Development  
+      - Electrocatalysis  
+      - Membrane Development  
+      - System Integration  
+      - Research Lab
+
+  utter_equipment_lab_types:
+  - text: |
+     **Equipment-based Labs include:**
+      - TEST_STATION  
+      - ENVIRON_CHAMBER  
+      - ANALYZER  
+      - PROCESSING  
+      - MICROSCOPY  
+      - ASSEMBLY
+
+  utter_product_lab_types:
+  - text: |
+     **Product-based Labs include:**
+      - MEA Components  
+      - Catalyst Materials  
+      - Test Equipment  
+      - Analysis Systems  
+      - Control Systems
+    
+  utter_equipment_setup:
+    - text: |
+        To set up a fuel cell testing system:
+
+         **Step 1**: Secure the fuel cell stack on a stable platform  
+         **Step 2**: Connect gas inlet/outlet tubes to hydrogen/air sources  
+         **Step 3**: Wire the stack to a programmable load or measurement system  
+         **Step 4**: Attach temperature and pressure sensors, if required  
+         **Step 5**: Use a software/controller for automated monitoring
+
+        Always check manufacturer guidelines and safety protocols before starting.
+
+  utter_voltage_issues:
+    - text: |
+        Low or unstable voltage in a fuel cell system may result from:
+
+         **Dry or flooded membrane**  
+         **Poor electrical connections**  
+         **Insufficient gas flow (H₂/O₂)**  
+         **Load mismatch or wiring issues**  
+         **Degraded MEA or catalyst layer**
+
+        Try checking the humidification, flow rates, and stack health for stability.
+
+  utter_membrane_issues:
+    - text: |
+        Issues with the fuel cell membrane can lead to major performance drops:
+
+         **Dry membrane** – Reduce temperature or increase humidification.  
+         **Flooding** – Check water management and flow channels.  
+         **Degradation** – Over time, membranes lose efficiency and may crack.  
+         **Replacement** – Replace if hydration fails or resistance increases.
+
+        Ensure proper temperature and humidity balance during operation.
+
+  utter_gas_flow_issues:
+    - text: |
+        If you're experiencing gas leakage, follow these steps carefully:
+
+         **Leak Detection Methods:**
+        - Use a soap water solution at joints and valves. Bubbles indicate leaks.
+        - Use a hydrogen or oxygen gas detector for sensitive environments.
+        - Check gas line fittings, seals, and tubing for wear or cracks.
+
+         **Safety Tip:** Always shut off the gas supply before attempting repairs.
+
+  utter_performance_testing:
+    - text: |
+       **Fuel Cell Performance Testing Procedure:**
+
+        1. **Ensure setup integrity** – check connections, gases, humidifiers, and sensors.
+        2. **Run initial diagnostics** – confirm OCV (Open Circuit Voltage).
+        3. **Apply current loads incrementally** using an electronic load.
+        4. **Measure and record**: voltage, current, power output at each point.
+        5. **Generate polarization and power curves** for analysis.
+        6. **Check for anomalies** like voltage drops, temperature spikes, or flooding.
+
+         This helps assess efficiency, response to load, and identify degradation.
+
+  utter_polarization_curve:
+    - text: |
+       **Creating a Polarization Curve** (Voltage vs Current):
+
+        1. **Set up the fuel cell** with proper gas flow and humidity control.
+        2. **Start with Open Circuit Voltage (OCV)**: no current drawn.
+        3. **Incrementally apply load** to draw increasing current.
+        4. At each point, **record voltage vs current** (V-I data).
+        5. Plot the V-I graph. Then compute **Power = V × I** for power curve.
+
+         This curve reveals three loss regions:
+        - **Activation Losses** (low current)
+        - **Ohmic Losses** (linear slope)
+        - **Mass Transport Losses** (high current region)
+
+  utter_maintenance_procedures:
+    - text: |
+       **Fuel Cell Maintenance Checklist:**
+
+        1. Inspect connections, fittings, and seals for leaks.
+        2. Clean external surfaces and air filters regularly.
+        3. Check membrane hydration and remove residue buildup.
+        4. Calibrate gas sensors and data logging instruments.
+        5. Review and back up test data logs.
+        6. Replace degraded MEA components as needed.
+
+         Follow a weekly or monthly schedule based on usage intensity.
+
+  utter_parameter_optimization:
+    - text: |
+       **Optimization Tips for Fuel Cell Performance:**
+
+        - **Temperature**: Operate between 60°C to 80°C for PEMFCs.
+        - **Pressure**: 1.5–2.5 atm helps improve reaction rates.
+        - **Flow Rate**: Balance hydrogen/oxygen flow to avoid starvation or flooding.
+        - **Humidity**: Maintain membrane hydration without causing flooding.
+
+         Adjust these parameters based on your specific setup for maximum efficiency.
+
+  utter_catalyst_layer_info:
+    - text: " The catalyst layer accelerates the reaction between hydrogen and oxygen. It's usually made of platinum and coated on both sides of the membrane."
+  
+  utter_mea_info:
+    - text: " The Membrane Electrode Assembly (MEA) consists of the proton exchange membrane sandwiched between two electrodes (anode and cathode) with catalyst layers."
+ 
+  utter_bipolar_plate_info:
+    - text: " Bipolar plates distribute gases evenly, collect current, and help in water and heat management. They are typically made of graphite or metal."
+
+  utter_gdl_info:
+    - text: " The Gas Diffusion Layer (GDL) allows gases to reach the catalyst layer and manages water produced during the reaction. It's usually made of carbon fiber paper."
+
+  utter_part_descriptions:
+    - text: |
+       **Fuel Cell Part Specifications**:
+        - MEA: Central active part with PEM and catalyst
+        - Bipolar Plates: Conductive, corrosion-resistant
+        - GDL: Porous, conductive, water-managing
+        - End Plates, Seals, and Flow Fields also play key roles in performance
+        
+  utter_default:
+    - text: "I'm sorry, I didn't understand that. Let me try again."
+
+slots:
+  parameter:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: parameter
+      - type: from_text
+        conditions:
+          - active_loop: check_parameter_limits_form
+            requested_slot: parameter
+  value:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: value
+      - type: from_text
+        conditions:
+          - active_loop: check_parameter_limits_form
+            requested_slot: value
+  unit:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: unit
+      - type: from_text
+        conditions:
+          - active_loop: check_parameter_limits_form
+            requested_slot: unit
+  issue_type:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: issue_type
+  fuel_cell_type:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: fuel_cell_type
+  safety_guideline:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: safety_guideline
+  emergency_type:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: emergency_type
+  scenario:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: scenario
+      - type: from_text
+        conditions:
+          - active_loop: get_emergency_procedure_form
+            requested_slot: scenario
+  equipment:
+    type: text
+    mappings:
+      - type: from_text
+  experiment:
+    type: text
+    mappings:
+      - type: from_text
+
+forms:
+  check_parameter_limits_form:
+    required_slots:
+      - parameter
+      - value
+      - unit
+  get_emergency_procedure_form:
+    required_slots:
+      - scenario
+
+actions:
+  - action_fetch_response
+  - action_query_rag

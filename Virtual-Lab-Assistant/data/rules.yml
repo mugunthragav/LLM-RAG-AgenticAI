@@ -1,0 +1,58 @@
+version: "3.1"
+
+rules:
+  - rule: Greet the user
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: Handle check parameter limits
+    steps:
+      - intent: check_parameter_limits
+      - action: check_parameter_limits_form
+      - active_loop: check_parameter_limits_form
+      - active_loop: null
+      - action: action_fetch_response
+
+  - rule: Handle safety guidelines
+    steps:
+      - intent: get_safety_guidelines
+      - action: action_fetch_response
+
+  - rule: Handle emergency procedures
+    steps:
+      - intent: get_emergency_procedure
+      - action: get_emergency_procedure_form
+      - active_loop: get_emergency_procedure_form
+      - active_loop: null
+      - action: action_fetch_response
+
+  - rule: Handle performance metrics
+    steps:
+      - intent: check_performance_metrics
+      - action: action_fetch_response
+
+  - rule: Handle available labs
+    steps:
+      - intent: available_labs
+      - action: action_fetch_response
+
+  - rule: Handle lab equipment
+    steps:
+      - intent: lab_equipment
+      - action: action_fetch_response
+
+  - rule: Handle experiment help
+    steps:
+      - intent: experiment_help
+      - action: action_fetch_response
+
+  - rule: Handle RAG queries
+    steps:
+      - intent: query_rag
+      - action: action_query_rag
+
+  - rule: Handle NLU fallback
+    steps:
+      - intent: nlu_fallback
+      - action: action_fetch_response

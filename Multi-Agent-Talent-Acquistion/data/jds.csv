@@ -1,0 +1,9 @@
+id,role,text
+1,Data Scientist,"Data Scientist role for candidates with 0-1 years of experience. Requires skills in Python or R, statistics(Predictive Analysis, Hypothesis testing, PCA, Text Analytics, Univariate and Bivariate analysis), Database Management, Sql, Mysql, Machine learning(Predictive Analysis, Hypothesis testing, PCA, Text Analytics, Univariate and Bivariate analysis), Deep learning, Natural language Processing(TF-IDF, Vectorization, NLTK, Spacy, AI and Data Visualization)"
+2,Backend Developer,"Backend Developer role for freshers with 0-1 years of experience. Requires skills in Node.js, Sql, Mysql, MongoDB, Java/J2EE and Springboot"
+3,Frontend Developer,"Frontend Developer role for candidates with 0-1 years of experience. Requires skills in React, JavaScript, HTML/CSS and Angular"
+4,Machine Learning Engineer,"Machine Learning Engineer role for candidates with 0-1 years of experience. Requires skills in Supervised learning, Unsupervised learning, reinforcement learning TensorFlow and PyTorch"
+5,UI/UX Designer,"UI/UX Designer role for candidates with 0-3 years of experience. Requires skills in HTML, CSS Adobe XD, Figma, Sketch, Wireframing and Prototyping"
+6,Data Analyst,"Data Analyst role for candidates with 0-1 years of experience. Requires skills in sql, Mysql, tableau, R or Python, Microsoft Excel, Machine learning and data visualization"
+7,Devops Engineer,"Devops Engineer role for candidates with 1-2 years of experience. Requires skills in AWS, Azure, Docker, kubernetes, Jenkins, Terraform and CI/CD"
+8,Full stack Developer,"Full stack Developer role for candidates with 0-1 years of experience. Requires skills in React, Node.js, Javascript, HTML/CSS, SQl, Mysql, MongoDB and Express.js, Java/J2EE"

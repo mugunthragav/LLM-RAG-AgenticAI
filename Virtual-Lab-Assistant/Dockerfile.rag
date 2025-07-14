@@ -1,0 +1,14 @@
+# Dockerfile.rag
+FROM virtual-lab-base:latest AS rag
+WORKDIR /app
+
+COPY rag/data/sample.pdf rag/data/sample.pdf
+COPY . .
+
+# Run pdf_loader from inside rag/
+WORKDIR /app/rag
+RUN python pdf_loader.py
+
+EXPOSE 8002
+CMD ["uvicorn", "rag_config:app", "--host", "0.0.0.0", "--port", "8002"]
+

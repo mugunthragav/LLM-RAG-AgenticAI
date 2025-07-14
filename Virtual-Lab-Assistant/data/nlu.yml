@@ -1,0 +1,341 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hi
+      - hello
+      - hey
+      - good morning
+      - good evening
+      - greetings
+
+  - intent: goodbye
+    examples: |
+      - bye
+      - goodbye
+      - see you later
+      - catch you next time
+      - thanks, bye
+      - talk to you later
+      - I’m done
+      
+  - intent: fuel_cell_types
+    examples: |
+      - What types of fuel cell exist?
+      - Tell me the different kinds of hydrogen fuel cells?
+      - How many types of fuel cells are there?
+
+  - intent: list_of_labs
+    examples: |
+      - List the labs in fuel cells?
+      - What are the types of labs?
+      - List of labs used in testing?
+      - Show fuel cell testing labs?
+      - Lab types in fuel cell research
+
+  - intent: lab_categories_list
+    examples: |
+      - What are the lab categories?
+      - List all categories of labs
+      - Show me lab classification
+      - What categories do labs fall into?
+      - Can you list types of labs?
+
+  - intent: application_lab_types
+    examples: |
+      - What are application-based labs?
+      - List labs by application
+      - Tell me types of research labs
+      - Application specific lab types
+      - Show application lab categories
+
+  - intent: equipment_lab_types
+    examples: |
+      - What are equipment labs?
+      - Types of equipment-based labs
+      - Equipment categories in labs
+      - List equipment lab types
+
+  - intent: product_lab_types
+    examples: |
+      - What are product-based labs?
+      - Show product categories in labs
+      - Types of product-oriented labs
+      - List product lab types 
+   
+  - intent: hydrogen_fuel_cell_basics
+    examples: |
+      - How does a hydrogen fuel cell work?
+      - What is a hydrogen fuel cell?
+      - Explain hydrogen fuel cell operation.
+      - Can you tell me how a fuel cell generates electricity?
+
+  - intent: fuel_cell_efficiency
+    examples: |
+      - What is the efficiency of a fuel cell?
+      - How efficient are fuel cells?
+      - What is the energy conversion efficiency of fuel cells?
+      - How does efficiency vary among different types of fuel cells?
+      - Compare PEMFC and SOFC in terms of efficiency
+      - Is fuel cell efficiency better than combustion engines?
+      - What is the typical efficiency of hydrogen fuel cells?
+      - How much power do fuel cells produce per input?
+      - What is the electrical efficiency of a fuel cell?
+
+  - intent: fuel_cell_main_components
+    examples: |
+      - What are the main components of a fuel cell?
+      - Tell me the core parts of a fuel cell?
+      - Explain the main components of fuel cell?
+
+  - intent: fuel_cell_structure
+    examples: |
+      - Can you explain the structure of a fuel cell?
+      - Describe how a fuel cell is structured?
+      - structure of a fuel cell?
+
+  - intent: fuel_cell_parts_list
+    examples: |
+      - What parts make up a fuel cell?
+      - Give me the list of fuel cell components?
+      - list of fuel cell components?
+
+  - intent: anode_cathode_function
+    examples: |
+      - How do the anode and cathode work in a fuel cell?
+      - Explain anode and cathode roles?
+      - what is anode cathode roles?
+
+  - intent: fuel_cell_troubleshooting
+    examples: |
+      - My fuel cell is not working properly.
+      - There is a problem with my fuel cell.
+      - The power output of my fuel cell is too low.
+      - What can cause my fuel cell to stop working?
+      - How do I fix issues with fuel cells?
+      - My fuel cell shows unstable performance.
+      - Fuel cell stopped generating power suddenly.
+      - Why is the current output low in my fuel cell?
+      - I'm getting inconsistent readings from the fuel cell.
+      - The cell isn't responding after startup.
+      - Fuel cell doesn't respond to load changes.
+      - Troubleshooting PEMFC startup failure?
+
+  - intent: equipment_setup
+    examples: |
+      - how to set up the fuel cell apparatus
+      - equipment needed for fuel cell experiment
+      - setup procedure for PEMFC testing
+      - how to connect the fuel cell stack
+      - installation steps for fuel cell
+      - equipment configuration guide
+      - how to assemble fuel cell components
+      - steps to install the fuel cell equipment
+      - guide me on equipment setup for testing
+      - what setup is required for a fuel cell lab
+      - how to prepare the test bench for PEMFC
+      - equipment checklist for starting fuel cell experiments
+
+  - intent: voltage_issues
+    examples: |
+      - why is my fuel cell voltage low
+      - voltage drop problems
+      - fuel cell not generating expected voltage
+      - voltage fluctuation issues
+      - unstable voltage output
+      - zero voltage reading
+      - low performance issues
+      - voltage output is unstable
+      - what causes a voltage drop in fuel cells
+      - sudden voltage loss in my cell
+      - voltage not reaching expected levels
+
+  - intent: membrane_issues
+    examples: |
+      - membrane hydration problems
+      - how to fix membrane drying
+      - membrane flooding issues
+      - membrane degradation signs
+      - how to maintain proper membrane hydration
+      - membrane failure symptoms
+      - membrane replacement procedure  
+
+  - intent: gas_flow_issues
+    examples: |
+      - gas leakage detection
+      - how to detect gas leaks
+      - is there a hydrogen leak?
+      - method to find gas leakage
+      - I suspect gas is leaking
+      - leak in the gas pipe
+      - gas escaping from system
+      - gas odor near the cell 
+
+  - intent: performance_testing 
+    examples: |
+      - performance testing procedure
+      - how to perform a fuel cell performance test
+      - what is the standard test for fuel cell performance
+      - steps for testing fuel cell performance
+      - procedure for evaluating fuel cell output
+
+  - intent: polarization_curve
+    examples: |
+      - how to create polarization curve
+      - steps to generate a polarization curve
+      - method to obtain voltage vs current curve
+      - what is the process to plot a polarization curve
+      - how is polarization curve measured
+
+  - intent: maintenance_procedures
+    examples: |
+      - regular maintenance steps
+      - how to clean fuel cell
+      - maintenance schedule
+      - preventive maintenance guide
+      - system maintenance requirements
+      - cleaning procedures
+      - maintenance checklist
+      - what are the weekly maintenance tasks
+      - how to maintain the fuel cell system
+      - best practices for long-term fuel cell use
+
+  - intent: parameter_optimization
+    examples: |
+      - how to optimize temperature
+      - best pressure settings
+      - optimal flow rate adjustment
+      - parameter optimization guide
+      - how to improve performance
+      - optimization techniques
+      - best operating conditions
+      - how to increase cell efficiency through parameters
+      - temperature settings for better results
+      - what are optimal conditions for fuel cells
+      - how to tune flow rate and humidity   
+
+  - intent: catalyst_layer_info
+    examples: |
+      - explain catalyst layer
+      - what is the catalyst used in fuel cells
+      - how does the catalyst layer work in PEMFC
+      - function of catalyst in a fuel cell    
+
+  - intent: mea_info
+    examples: |
+      - what is the membrane electrode assembly
+      - explain MEA in fuel cell
+      - what does MEA consist of
+      - describe MEA structure
+
+  - intent: bipolar_plate_info
+    examples: |
+      - bipolar plate function
+      - what are bipolar plates used for
+      - how do bipolar plates work
+      - role of bipolar plates in a fuel cell
+
+  - intent: gdl_info
+    examples: |
+      - gas diffusion layer purpose
+      - function of GDL
+      - explain the gas diffusion layer
+      - why is the GDL important    
+    
+  - intent: part_descriptions
+    examples: |
+      - component descriptions
+      - part specifications
+      - material properties
+      - what are the specifications of fuel cell parts
+      - describe the structure of a fuel cell  
+    
+  - intent: check_parameter_limits
+    examples: |
+      - What is the acceptable range for [voltage](parameter)?
+      - Can you check if [0.8](value) V is a safe voltage?
+      - Is [60](value) degrees Celsius an acceptable temperature?
+      - What is the recommended [pressure](parameter) range in [PSI](unit)?
+      - Is [300](value) Kelvin within the normal [temperature](parameter) range?
+      - Is [0.8](value) [V](unit) okay for [voltage](parameter)?
+      - Check if [25](value) °C is okay for [temperature](parameter)?
+
+  - intent: get_safety_guidelines
+    examples: |
+      - What are the safety guidelines?
+      - safety procedure?
+      - What safety rules apply in high-temperature environments?
+      - Is it safe to work alone in the fuel cell lab?
+      - Do I need special gloves for handling the membrane?
+      - How to safely operate a fuel cell?
+      - Are there any precautions for using fuel cells?
+      - How to store hydrogen safely?
+      - What precautions should I take when operating a fuel cell?
+
+  - intent: get_emergency_procedure
+    examples: |
+      - What should I do in case of a fuel leak?
+      - The hydrogen sensor is beeping
+      - Smoke is coming from the fuel cell
+      - How to handle a fuel cell overheating scenario?
+      - What are the emergency steps for fuel cell failure?
+      - What to do if there’s an explosion risk?
+
+  - intent: check_performance_metrics
+    examples: |
+      - What is the expected performance range for [efficiency](parameter)?
+      - Is [75](value)% efficiency considered good?
+      - Can you check if [0.6](value) V is within the normal operation range for [voltage_drop](parameter)?
+      - Is [150](value) W a good [power_output](parameter)?
+
+  - intent: available_labs
+    examples: |
+      - What labs are currently available?
+      - which labs are occupied?
+      - Show me the available labs
+      - Are there any labs I can use now?
+      - List all available lab facilities?
+      - Tell me the available fuel cell labs
+      - Show the list of labs that are free now
+
+  - intent: lab_equipment
+    examples: |
+      - Where is the microscope?
+      - Locate the beaker for me
+      - I need to find the bunsen burner
+      - Where can I find the mass flow controller?
+      - Tell me where the equipment is stored?
+
+  - intent: experiment_help
+    examples: |
+      - Guide me through titration
+      - What are the steps in Hydrogen Purge?
+      - Walk me through the experiment procedure
+      - show me the procedure
+      - step by step guide
+      - experimental protocol
+      - Explain the method for titration
+      - How do I perform Hydrogen Purge?
+    
+  - intent: query_rag
+    examples: |
+      - what is a fuel cell
+      - explain fuel cell materials
+      - what is hydrogen embrittlement
+      - tell me about fracture in fuel cells
+      - what is AFC
+      - what is Molten Carbonate Fuel Cells (MCFC)
+      - what is Alkaline Fuel Cells (AFC)
+      - what is Phosphoric Acid Fuel Cells
+      - what is the full form of MCFC
+      - what does MCFC stand for
+      - full form of AFC
+      - what is the meaning of PAFC
+      - what is the full form of PAFC
+      - what does AFC stand for
+      - meaning of MCFC
+      - define MCFC
+      - what does PAFC mean
+      - full form of SOFC
+      - what is the full form of PEMFC

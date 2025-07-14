@@ -1,0 +1,30 @@
+# Python Bytecode and Cache
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+rasavenv/
+
+# index
+rag/faiss_index
+
+# Rasa Models
+models/
+*.tar.gz
+
+# Sensitive files
+.env
+
+# Temporary/Generated files
+logs/
+__pycache__/
+*.pyc
+*.log
+docker_logs.txt
+
+
+# Docker-related backups
+*.tar

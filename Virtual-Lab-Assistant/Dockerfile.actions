@@ -1,0 +1,7 @@
+FROM virtual-lab-base:latest AS actions
+
+WORKDIR /app
+COPY . .
+
+EXPOSE 5055
+CMD ["rasa", "run", "actions", "--port", "5055"]

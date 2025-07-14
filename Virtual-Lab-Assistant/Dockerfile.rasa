@@ -1,0 +1,9 @@
+FROM virtual-lab-base:latest AS rasa
+
+WORKDIR /app
+COPY . .
+
+EXPOSE 5005
+
+# Train model at container run time (so model is saved even with mounted volume)
+CMD ["sh", "-c", "rasa train && rasa run --enable-api --cors '*'"]

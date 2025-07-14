@@ -1,0 +1,14 @@
+action_endpoint:
+  url: "http://actions:5055/webhook"
+
+
+
+# Optional: Tracker store for development (uncomment and adjust for Docker)
+#tracker_store:
+ # type: SQL
+ # dialect: mysql
+ # url: mysql  # Use 'mysql' in Docker, 'localhost' if running MySQL locally
+ # port: 3306
+ # db: Virtual_Lab_Assistant
+ # username: root
+ # password: Preethipa1811
