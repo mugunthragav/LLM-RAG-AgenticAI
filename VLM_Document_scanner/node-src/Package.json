@@ -1,0 +1,24 @@
+{
+  "name": "lab-monitor-system",
+  "version": "1.0.0",
+  "description": "Lightweight lab monitoring system with AI detection",
+  "main": "simple-server.js",
+  "scripts": {
+    "start": "node simple-server.js",
+    "dev": "nodemon simple-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["surveillance", "ai", "detection", "lab", "monitoring"],
+  "author": "Lab Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0",
+    "cors": "^2.8.5",
+    "axios": "^1.7.7",
+    "ffmpeg-static": "^5.2.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

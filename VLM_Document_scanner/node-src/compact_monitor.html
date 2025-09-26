@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Monitor Widget</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        .lab-monitor {
+            width: 100%;
+            max-width: 320px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .monitor-header {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-dot.offline {
+            background: #ef4444;
+            animation: none;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            background: #000;
+            overflow: hidden;
+        }
+        
+        .lab-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .detection-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .detection-box {
+            position: absolute;
+            border: 2px solid #10b981;
+            border-radius: 3px;
+            background: rgba(16, 185, 129, 0.1);
+            animation: detectFlash 0.5s ease-in-out;
+        }
+        
+        .detection-box.person { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+        .detection-box.face { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+        .detection-box.object { border-color: #10b981; background: rgba(16, 185, 129, 0.1); } /* New style for objects */
+
+        .detection-label {
+            position: absolute;
+            top: -18px;
+            left: 0;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+        
+        @keyframes detectFlash {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .controls {
+            padding: 8px;
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 6px 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            min-width: 60px;
+        }
+        
+        .btn-face { background: #3b82f6; color: white; }
+        .btn-person { background: #f59e0b; color: white; }
+        .btn-object { background: #10b981; color: white; } /* New button style */
+        .btn-auto { background: #6b7280; color: white; }
+        .btn-auto.active { background: #ef4444; }
+        .btn-record { background: #dc2626; color: white; }
+        .btn-record.active { background: #22c55e; }
+        .btn-snapshot { background: #8b5cf6; color: white; }
+        .btn-snapshot.active { background: #22c55e; }
+        
+        .btn:hover { opacity: 0.8; transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        
+        .stats {
+            background: #111827;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .stat-number.faces { color: #3b82f6; }
+        .stat-number.persons { color: #f59e0b; }
+        .stat-number.objects { color: #10b981; }
+        
+        .activity-log {
+            background: #111827;
+            max-height: 80px;
+            overflow-y: auto;
+            font-size: 10px;
+            color: #6b7280;
+        }
+        
+        .activity-item {
+            padding: 4px 12px;
+            border-bottom: 1px solid #1f2937;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .activity-item:last-child { border-bottom: none; }
+        
+        .processing {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            display: none;
+        }
+        
+        .spinner {
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        canvas { display: none; }
+    </style>
+</head>
+<body>
+    <div class="lab-monitor">
+        <div class="monitor-header">
+            <div class="status-dot" id="systemStatus"></div>
+            <span>Lab Monitor</span>
+            <span style="margin-left: auto; font-size: 11px;" id="lastUpdate">--:--</span>
+        </div>
+        
+        <div class="video-container">
+            <video class="lab-video" id="labVideo" autoplay muted></video>
+            <div class="detection-overlay" id="detectionOverlay"></div>
+            <canvas id="canvas"></canvas>
+            
+            <div class="processing" id="processing">
+                <div class="spinner"></div>
+                Processing...
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-face" id="btnFace">👤 Face</button>
+            <button class="btn btn-person" id="btnPerson">🚶 Person</button>
+            <button class="btn btn-object" id="btnObject">📦 Object</button> <button class="btn btn-auto" id="btnAuto">🔄 Auto</button>
+            <button class="btn btn-record" id="btnRecord">🎥 Record Off</button>
+            <button class="btn btn-snapshot" id="btnSnapshot">📸 Snapshot Off</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number faces" id="faceCount">0</span>
+                <span>Faces</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number persons" id="personCount">0</span>
+                <span>Persons</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number objects" id="objectCount">0</span>
+                <span>Objects</span>
+            </div>
+        </div>
+        
+        <div class="activity-log" id="activityLog">
+            <div class="activity-item">
+                <span>System ready</span>
+                <span id="initTime"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class LabMonitor {
+            constructor() {
+                this.video = document.getElementById('labVideo');
+                this.canvas = document.getElementById('canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.overlay = document.getElementById('detectionOverlay');
+                this.processing = document.getElementById('processing');
+                
+                this.isAutoDetecting = false;
+                this.autoInterval = null;
+                this.isProcessing = false;
+                this.stats = { face: 0, person: 0, object: 0 };
+                this.isRecordingEnabled = false;
+                this.isSnapshotEnabled = false;
+                this.hls = null;
+                
+                this.init();
+            }
+            
+            async init() {
+                await this.fetchStatus();
+                this.setupVideo();
+                this.setupControls();
+                this.updateTime();
+                this.setStatus(true);
+                
+                // Update time every minute
+                setInterval(() => this.updateTime(), 60000);
+                // Check status periodically
+                setInterval(() => this.fetchStatus(), 30000);
+            }
+            
+            async fetchStatus() {
+                try {
+                    const response = await fetch('/api/status', { timeout: 5000 });
+                    const status = await response.json();
+                    this.isRecordingEnabled = status.recording_enabled || false;
+                    this.isSnapshotEnabled = status.snapshot_enabled || false;
+                    this.setStatus(status.streaming && status.ffmpeg_running);
+                    this.updateButtonStates();
+                } catch (error) {
+                    console.error('Failed to fetch status:', error);
+                    this.setStatus(false);
+                }
+            }
+            
+            setupVideo() {
+                const videoUrl = '/videos/ipcam/index.m3u8';
+                
+                if (this.hls) {
+                    this.hls.destroy();
+                    this.hls = null;
+                }
+
+                if (Hls.isSupported()) {
+                    this.hls = new Hls({
+                        enableWorker: false,
+                        lowLatencyMode: true,
+                        backBufferLength: 10, // Limit buffer to reduce latency
+                        maxBufferLength: 30,
+                        liveSyncDurationCount: 3
+                    });
+                    
+                    this.hls.loadSource(videoUrl);
+                    this.hls.attachMedia(this.video);
+                    
+                    this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        this.video.play().catch(err => console.error('Video play error:', err));
+                        this.setStatus(true);
+                    });
+                    
+                    this.hls.on(Hls.Events.ERROR, (event, data) => {
+                        console.error('HLS error:', data);
+                        this.setStatus(false);
+                        if (data.fatal) {
+                            setTimeout(() => this.setupVideo(), 5000);
+                        }
+                    });
+
+                    this.video.addEventListener('stalled', () => {
+                        console.log('Video stalled, attempting to recover...');
+                        setTimeout(() => this.setupVideo(), 5000);
+                    });
+
+                    this.video.addEventListener('error', () => {
+                        console.log('Video error, attempting to recover...');
+                        setTimeout(() => this.setupVideo(), 5000);
+                    });
+                } else {
+                    this.video.src = videoUrl;
+                    this.video.play().catch(err => console.error('Video play error:', err));
+                }
+            }
+            
+            setupControls() {
+                document.getElementById('btnFace').onclick = () => this.detect('face');
+                document.getElementById('btnPerson').onclick = () => this.detect('person');
+                document.getElementById('btnObject').onclick = () => this.detect('object'); // New: Object detection button
+                document.getElementById('btnAuto').onclick = () => this.toggleAuto();
+                document.getElementById('btnRecord').onclick = () => this.toggleRecord();
+                document.getElementById('btnSnapshot').onclick = () => this.toggleSnapshot();
+            }
+            
+            setStatus(online) {
+                const dot = document.getElementById('systemStatus');
+                dot.className = online ? 'status-dot' : 'status-dot offline';
+            }
+            
+            updateTime() {
+                const now = new Date();
+                document.getElementById('lastUpdate').textContent = 
+                    now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+                    
+                if (!document.getElementById('initTime').textContent) {
+                    document.getElementById('initTime').textContent = 
+                        now.toLocaleTimeString('en-US', { hour12: false });
+                }
+            }
+            
+            captureFrame() {
+                if (this.video.videoWidth === 0 || this.video.readyState < 2) {
+                    throw new Error('Video not ready');
+                }
+                
+                this.canvas.width = this.video.videoWidth;
+                this.canvas.height = this.video.videoHeight;
+                this.ctx.drawImage(this.video, 0, 0);
+                return this.canvas.toDataURL('image/jpeg', 0.7).split(',')[1];
+            }
+            
+            async detect(type) {
+                if (this.isProcessing) {
+                    console.log(`Skipping detection for ${type}: already processing`);
+                    return;
+                }
+                
+                try {
+                    this.isProcessing = true;
+                    this.processing.style.display = 'block';
+                    
+                    const imageBase64 = this.captureFrame();
+                    const response = await fetch(`/api/detect/${type}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image_base64: imageBase64 }),
+                        signal: AbortSignal.timeout(15000) // 15-second timeout
+                    });
+                    
+                    if (response.ok) {
+                        const results = await response.json();
+                        this.handleResults(results, type);
+                        this.setStatus(true);
+                    } else {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error(`Detection failed for ${type}:`, error);
+                    this.setStatus(false);
+                    this.addActivity(`Detection failed: ${error.message}`);
+                } finally {
+                    this.isProcessing = false;
+                    this.processing.style.display = 'none';
+                }
+            }
+            
+            handleResults(results, type) {
+                // Determine the correct array based on type
+                let items;
+                if (type === 'face') {
+                    items = results.faces;
+                } else if (type === 'person' || type === 'object') {
+                    items = results.detections;
+                }
+                
+                const count = items ? items.length : 0;
+                
+                // Update stats
+                document.getElementById(`${type}Count`).textContent = count;
+                
+                // Draw boxes
+                this.drawBoxes(items, type);
+                
+                // Add activity
+                if (count > 0) {
+                    this.addActivity(`${count} ${type}(s) detected`);
+                }
+                
+                this.updateTime();
+            }
+            
+            drawBoxes(items, type) {
+                this.overlay.innerHTML = '';
+                
+                if (!items || items.length === 0) return;
+                
+                const videoRect = this.video.getBoundingClientRect();
+                const scaleX = videoRect.width / this.video.videoWidth;
+                const scaleY = videoRect.height / this.video.videoHeight;
+                
+                items.forEach(item => {
+                    // Use 'bounding_box' for face and 'bounding_box' for person/object
+                    const boundingBox = item.bounding_box; 
+
+                    if (boundingBox && boundingBox.length === 4) {
+                        const [x1, y1, x2, y2] = boundingBox;
+                        
+                        const box = document.createElement('div');
+                        box.className = `detection-box ${type}`;
+                        box.style.left = `${x1 * scaleX}px`;
+                        box.style.top = `${y1 * scaleY}px`;
+                        box.style.width = `${(x2 - x1) * scaleX}px`;
+                        box.style.height = `${(y2 - y1) * scaleY}px`;
+                        
+                        const label = document.createElement('div');
+                        label.className = 'detection-label';
+                        const name = item.name || item.label; // Use 'name' for face, 'label' for objects/persons
+                        const confidence = Math.round(item.confidence * 100);
+                        label.textContent = `${name} ${confidence}%`;
+                        
+                        box.appendChild(label);
+                        this.overlay.appendChild(box);
+                        
+                        // Auto-remove boxes
+                        if (!this.isAutoDetecting) {
+                            setTimeout(() => {
+                                if (box.parentNode) box.parentNode.removeChild(box);
+                            }, 2000);
+                        }
+                    }
+                });
+            }
+            
+            async toggleRecord() {
+                try {
+                    const response = await fetch('/api/record/toggle', {
+                        method: 'POST',
+                        signal: AbortSignal.timeout(5000)
+                    });
+                    const data = await response.json();
+                    this.isRecordingEnabled = data.recording_enabled;
+                    this.updateButtonStates();
+                    this.addActivity(`Recording ${this.isRecordingEnabled ? 'enabled' : 'disabled'}`);
+                } catch (error) {
+                    console.error('Failed to toggle recording:', error);
+                    this.addActivity('Failed to toggle recording');
+                }
+            }
+            
+            async toggleSnapshot() {
+                try {
+                    const response = await fetch('/api/snapshot/toggle', {
+                        method: 'POST',
+                        signal: AbortSignal.timeout(5000)
+                    });
+                    const data = await response.json();
+                    this.isSnapshotEnabled = data.snapshot_enabled;
+                    this.updateButtonStates();
+                    this.addActivity(`Snapshot ${this.isSnapshotEnabled ? 'enabled' : 'disabled'}`);
+                } catch (error) {
+                    console.error('Failed to toggle snapshot:', error);
+                    this.addActivity('Failed to toggle snapshot');
+                }
+            }
+            
+            updateButtonStates() {
+                const recordBtn = document.getElementById('btnRecord');
+                const snapshotBtn = document.getElementById('btnSnapshot');
+                
+                recordBtn.textContent = `🎥 Record ${this.isRecordingEnabled ? 'On' : 'Off'}`;
+                recordBtn.classList.toggle('active', this.isRecordingEnabled);
+                
+                snapshotBtn.textContent = `📸 Snapshot ${this.isSnapshotEnabled ? 'On' : 'Off'}`;
+                snapshotBtn.classList.toggle('active', this.isSnapshotEnabled);
+            }
+            
+            toggleAuto() {
+                const btn = document.getElementById('btnAuto');
+                
+                if (this.isAutoDetecting) {
+                    clearInterval(this.autoInterval);
+                    this.isAutoDetecting = false;
+                    btn.textContent = '🔄 Auto';
+                    btn.classList.remove('active');
+                    this.overlay.innerHTML = '';
+                    this.addActivity('Auto detection stopped');
+                } else {
+                    this.isAutoDetecting = true;
+                    btn.textContent = '⏹ Stop';
+                    btn.classList.add('active');
+                    this.addActivity('Auto detection started');
+                    
+                    // Added 'object' to the detection types for auto mode
+                    const detectionTypes = ['face', 'person', 'object']; 
+                    let currentIndex = 0;
+                    
+                    this.autoInterval = setInterval(async () => {
+                        if (!this.isProcessing) {
+                            await this.detect(detectionTypes[currentIndex]);
+                            currentIndex = (currentIndex + 1) % detectionTypes.length;
+                        }
+                    }, 5000); // Increased to 5 seconds
+                }
+            }
+            
+            addActivity(message) {
+                const log = document.getElementById('activityLog');
+                const item = document.createElement('div');
+                item.className = 'activity-item';
+                
+                const time = new Date().toLocaleTimeString('en-US', { 
+                    hour12: false, 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                
+                item.innerHTML = `<span>${message}</span><span>${time}</span>`;
+                log.insertBefore(item, log.firstChild);
+                
+                // Keep only last 5 items
+                while (log.children.length > 5) {
+                    log.removeChild(log.lastChild);
+                }
+            }
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new LabMonitor();
+        });
+    </script>
+</body>
+</html>

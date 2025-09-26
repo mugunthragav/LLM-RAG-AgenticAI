@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Detection</title>
+  <style>
+    body { background: #121212; color: white; text-align: center; font-family: sans-serif; padding: 20px; }
+    img { width: 90%; max-width: 720px; border: 3px solid #555; border-radius: 10px; }
+    button { margin: 8px; padding: 12px 18px; font-size: 16px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #555; }
+  </style>
+</head>
+<body>
+  <h1>📸 Live Detection Stream</h1>
+  <img id="video" src="/video_feed" alt="Stream" />
+  <div>
+    <button id="playPauseBtn" onclick="togglePlayPause()">▶ Pause</button>
+    <button id="takeSnapshotBtn" onclick="takeSnapshot()">🖼 Take Snapshot</button>
+    <button id="recordBtn" onclick="toggleRecord()">💾 Record</button>
+    <button id="detectToggleBtn" onclick="toggleDetections()">👁 Enable Detections</button>
+    <button onclick="fullScreen()">⛶ Fullscreen</button>
+    <button onclick="location.reload()">🔄 Refresh</button>
+  </div>
+  <script>
+    let isPlaying = true, recordEnabled = false, detectEnabled = false;
+    let latestSnapshotId = null, latestVideoId = null, detectionTriggered = false;
+
+    function togglePlayPause() {
+      fetch('/ui/playpause', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: isPlaying ? 'pause' : 'play' })
+      }).then(res => res.json()).then(data => {
+        isPlaying = data.playing;
+        document.getElementById('playPauseBtn').innerText = isPlaying ? '▶ Pause' : '▶ Play';
+      });
+    }
+
+    function takeSnapshot() {
+      fetch('/settings/snapshot', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enable: true }) })
+        .then(res => res.json()).then(data => {
+          if (data.snapshot_id) {
+            latestSnapshotId = data.snapshot_id;
+            window.location.href = `/download/snapshot/${latestSnapshotId}`;
+          }
+        });
+    }
+
+    function toggleRecord() {
+      fetch('/settings/record', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enable: !recordEnabled })
+      }).then(res => res.json()).then(data => {
+        recordEnabled = data.record_enabled;
+        document.getElementById('recordBtn').innerText = recordEnabled ? '💾 Stop Recording' : '💾 Record';
+        if (!recordEnabled && data.video_id) {
+          latestVideoId = data.video_id;
+          window.location.href = `/download/video/${latestVideoId}`;
+        }
+      });
+    }
+
+    function toggleDetections() {
+      fetch('/settings/detections', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enable: !detectEnabled })
+      }).then(res => res.json()).then(data => {
+        detectEnabled = data.detect_enabled;
+        detectionTriggered = false; // Reset when toggling
+        document.getElementById('detectToggleBtn').innerText = detectEnabled ? '👁 Disable Detections' : '👁 Enable Detections';
+      });
+    }
+
+    function fullScreen() {
+      const video = document.getElementById("video");
+      if (video.requestFullscreen) video.requestFullscreen();
+    }
+  </script>
+</body>
+</html>
